@@ -79,6 +79,20 @@
             background-color: #2980b9;
         }
 
+        /* Feedback */
+        .feedback-container{
+            position: absolute;
+            right: 2rem;
+            bottom: 2rem;
+            background-color: black;
+            color: white;
+            padding: 0.5rem;
+            height: 2rem;
+            width: 2rem;
+            text-align: center;
+            border-radius: 50%;
+        }
+
         /* Footer */
         footer {
             position: fixed;
@@ -120,6 +134,7 @@
 
     <button onclick="submitNote()" class="submit-btn">Submit</button>
 
+    <div class="feedback-container">?</div>
     <footer>© Interactor</footer>
 
     <script>
@@ -132,7 +147,7 @@
                 user: "peter"  // static user for now
             };
 
-            fetch("http://129.146.76.62:1111/notes", {
+            fetch("https://129.146.76.62:1111/notes", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
