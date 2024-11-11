@@ -81,6 +81,21 @@
 
         /* Feedback */
         .feedback-container{
+            position: relative;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            padding: 1rem;
+        }
+        #feedbackPopup{
+            display: none;
+            position: absolute;
+            bottom: 5rem;
+            right: 2rem;
+            background-color: grey;
+            padding: 1rem;
+        }
+        .feedback-button{
             position: absolute;
             right: 2rem;
             bottom: 2rem;
@@ -119,7 +134,7 @@
         <!-- <input type="text" id="userInput" placeholder="Write your comments here..."> -->
         <textarea 
             id="userInput"  
-            name="feedback" 
+            name="userInput" 
             rows="8" 
             cols="30"
             required
@@ -134,7 +149,20 @@
 
     <button onclick="submitNote()" class="submit-btn">Submit</button>
 
-    <div class="feedback-container">?</div>
+    <div class="feedback-container">
+        <div id="feedbackPopup">
+            <textarea 
+            id="feedbackInput"  
+            name="feedbackInput" 
+            rows="4" 
+            cols="3"
+            required
+            maxlength="500"
+            >How can this improve?</textarea>
+            <button onclick="feedbackNote()" class="submit-btn">Submit</button>  
+        </div>
+        <button  onclick="feedbackBtn()" class="feedback-button">?</button>
+    </div>
     <footer>© Interactor</footer>
 
     <script>
@@ -160,6 +188,35 @@
             })
             .catch(error => {
                 alert("Error submitting the note");
+                console.error("Error:", error);
+            });
+        }
+        function feedbackBtn() {
+            document.getElementById("feedbackPopup").style.display = "block";
+        };
+        function feedbackNote() {
+            const feedbackContent = document.getElementById('feedbackInput').value;
+
+            // Prepare data for the API call
+            const data = {
+                channel: "C5DQ8UKBM", // static channel
+                text: feedbackContent  // content
+            };
+
+            fetch("https://saas-alpha.interactor.com/api/v1/connector/slack/action/message.send/execute\?accountId\=7beb8a76-ad32-4579-934c-6fc8e8b29018", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "x-api-key": "interactor_zcx2kCrb_TfRQ8WJSVHOcb3899P0LM691"
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert("Feedback submitted successfully!");
+            })
+            .catch(error => {
+                alert("Error submitting the feedback");
                 console.error("Error:", error);
             });
         }
